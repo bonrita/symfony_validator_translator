@@ -1,0 +1,5 @@
+name: Symfony validator translator
+type: module
+description: 'Translate symfony violation messages.'
+package: Symfony tools suite
+core: 8.x
