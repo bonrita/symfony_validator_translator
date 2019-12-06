@@ -9,13 +9,15 @@ class and add it to your translation file as the `"msgid"` for that particular l
 you are overriding into your custom module.  
 Import the new translation into drupal.  
 Example:  
+Let's assume you want to override the original translated string of the Dutch language. The original translated
+ Dutch string is `Dit is geen geldig internationaal bankrekeningnummer (IBAN).`
 ```
 msgid "This is not a valid International Bank Account Number (IBAN)."  
 msgstr "Dit is geen valid IBAN nummer" 
 ``` 
 Now the error message that will be shown will be coming from your custom module.  
 To revert back to the symfony translation, just delete the custom translation, update the Drupal translations
-and you will then see the Symfony translations.
+and you will then see the original Symfony translation.
 
 ### Known problems  
 There modules that will make your application break once you enable this module.
