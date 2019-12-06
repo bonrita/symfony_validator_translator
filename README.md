@@ -63,6 +63,8 @@ Please do change it to
   public function __construct(EntityTypeManagerInterface $entity_type_manager, TranslationInterface $translation) {
 ```
 
+Take note of the `TranslationManager` changing to `TranslationInterface`.
+
 **Note**  
 There more contributed modules you maybe using that are not following good design patterns than the one mentioned above.
 So take note of the errors you get when your application breaks.
