@@ -13,6 +13,9 @@ Example:
 msgid "This is not a valid International Bank Account Number (IBAN)."  
 msgstr "Dit is geen valid IBAN nummer" 
 ``` 
+Now the error message that will be shown will be coming from your custom module.  
+To revert back to the symfony translation, just delete the custom translation, update the Drupal translations
+and you will then see the Symfony translations.
 
 ### Known problems  
 There modules that will make your application break once you enable this module.
