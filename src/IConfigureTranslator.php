@@ -14,4 +14,13 @@ interface IConfigureTranslator {
    */
   public function configure(string $lang_code);
 
+  /**
+   * Check if the translator needs configuring.
+   *
+   * @param string $lang_code
+   *
+   * @return bool
+   */
+  public function doesNeedConfiguring(string $lang_code);
+
 }

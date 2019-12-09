@@ -40,13 +40,18 @@ class ConfigureTranslator implements IConfigureTranslator {
    * {@inheritdoc}
    */
   public function configure(string $lang_code) {
-    if (!$this->activeLanguage || $this->activeLanguage <> $lang_code) {
-      $path = $this->basePath() . '/symfony/validator/Resources/translations/validators.' . $lang_code . '.xlf';
-      $this->translator->addLoader('xlf', $this->loader);
-      $this->translator->setLocale($lang_code);
-      $this->translator->addResource('xlf', $path, $lang_code);
-      $this->activeLanguage = $lang_code;
-    }
+    $path = $this->basePath() . '/symfony/validator/Resources/translations/validators.' . $lang_code . '.xlf';
+    $this->translator->addLoader('xlf', $this->loader);
+    $this->translator->setLocale($lang_code);
+    $this->translator->addResource('xlf', $path, $lang_code);
+    $this->activeLanguage = $lang_code;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function doesNeedConfiguring(string $lang_code) {
+    return (!$this->activeLanguage || $this->activeLanguage <> $lang_code);
   }
 
   /**

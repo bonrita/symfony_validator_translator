@@ -121,7 +121,9 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
     $string_translation = $this->getStringTranslation($lang, $translated_string->getUntranslatedString(), $translated_string->getOption('context'));
     if (!$string_translation && $this->translator instanceof TranslatorBagInterface) {
       // Configure the translator.
-      $this->configureTranslator->configure($lang);
+      if ($this->configureTranslator->doesNeedConfiguring($lang)) {
+        $this->configureTranslator->configure($lang);
+      }
 
       // Try getting the translated string from the cache.
       if($translation = $this->cache->getCachedTranslation($translated_string)) {
