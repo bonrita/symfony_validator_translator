@@ -68,6 +68,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
 
   /**
    * @inheritDoc
+   * @throws \Exception
    */
   public function translateString(TranslatableMarkup $translated_string) {
 
