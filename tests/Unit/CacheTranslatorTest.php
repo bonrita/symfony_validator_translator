@@ -97,4 +97,27 @@ class CacheTranslatorTest extends UnitTestCase {
     $this->assertEquals($translated, $translation);
   }
 
+
+  /**
+   * @covers ::cacheSymfonyTranslation
+   */
+  public function testCacheSymfonyTranslation() {
+    $translated =  $this->getRandomGenerator()->word(4);
+    $title = $this->getRandomGenerator()->word(8);
+    $untranslatedString =  new TranslatableMarkup($title);
+
+    $this->language->expects($this->any())->method('getId')->willReturn('nl');
+    $this->languageDefault->expects($this->any())->method('get')->willReturn($this->language);
+
+    $object = (new \stdClass());
+    $object->data = [$title => $translated];
+    $this->cache->expects($this->any())->method('get')->willReturn($object);
+
+    $this->cache->expects($this->once())->method('set');
+    $this->translator->expects($this->once())->method('trans');
+
+    $cacheTranslator = new CacheTranslator($this->translator, $this->languageDefault, $this->cache);
+    $cacheTranslator->cacheSymfonyTranslation($untranslatedString);
+  }
+
 }
