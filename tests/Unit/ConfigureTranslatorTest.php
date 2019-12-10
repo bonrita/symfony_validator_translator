@@ -28,6 +28,8 @@ class ConfigureTranslatorTest extends UnitTestCase {
   }
 
   /**
+   * Successfully configure the translator.
+   *
    * @covers ::configure
    */
   public function testconfigure() {
@@ -50,6 +52,13 @@ class ConfigureTranslatorTest extends UnitTestCase {
     $this->assertFalse($configureInstance->doesNeedConfiguring('nl'));
   }
 
+  /**
+   * Initiate the class to be tested.
+   *
+   * @param bool $configure
+   *
+   * @return \Drupal\symfony_validator_translator\ConfigureTranslator
+   */
   protected function instatiate(bool $configure = FALSE) {
     $translator = $this->getMockBuilder(Translator::class)
       ->disableOriginalConstructor()
