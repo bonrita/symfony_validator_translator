@@ -50,6 +50,9 @@ class ConfigureTranslatorTest extends UnitTestCase {
     // Translator should not need to be configured again as it was already
     //configured in the previous line.
     $this->assertFalse($configureInstance->doesNeedConfiguring('nl'));
+
+    // Allow re-configuring the translator if language has changed.
+    $this->assertTrue($configureInstance->doesNeedConfiguring('en'));
   }
 
   /**
