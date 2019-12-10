@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Validation;
  */
 final class ConfigureTranslator implements IConfigureTranslator {
 
+  const TRANSLATION_FORMAT = 'xlf';
+
   /**
    * @var null|string
    */
@@ -54,7 +56,7 @@ final class ConfigureTranslator implements IConfigureTranslator {
    * @throws \ReflectionException
    */
   public function configure(string $lang_code) {
-    $this->translator->addLoader('xlf', $this->loader);
+    $this->translator->addLoader(self::TRANSLATION_FORMAT, $this->loader);
     $this->translator->setLocale($lang_code);
     $this->addResource($lang_code);
     $this->activeLanguage = $lang_code;
@@ -77,8 +79,8 @@ final class ConfigureTranslator implements IConfigureTranslator {
       $reflection = new \ReflectionClass(Validation::class);
       $this->resourcePath = str_replace('Validation.php', 'Resources/translations/validators.', $reflection->getFileName());
     }
-    $path = $this->resourcePath . $lang_code . '.xlf';
-    $this->translator->addResource('xlf', $path, $lang_code);
+    $path = $this->resourcePath . $lang_code . '.' . self::TRANSLATION_FORMAT;
+    $this->translator->addResource(self::TRANSLATION_FORMAT, $path, $lang_code);
   }
 
 }
