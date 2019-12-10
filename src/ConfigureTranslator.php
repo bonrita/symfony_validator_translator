@@ -32,11 +32,11 @@ final class ConfigureTranslator implements IConfigureTranslator {
   private $translator;
 
   /**
-   * The path to the translation resources.
+   * Check if resource was set.
    *
-   * @var string
+   * @var bool
    */
-  private $path;
+  private $isResourceSet = NULL;
 
   /**
    * DTranslationManager constructor.
@@ -54,12 +54,9 @@ final class ConfigureTranslator implements IConfigureTranslator {
    * @throws \ReflectionException
    */
   public function configure(string $lang_code) {
-    if (!$this->path) {
-      $this->setResourcePath($lang_code);
-    }
     $this->translator->addLoader('xlf', $this->loader);
     $this->translator->setLocale($lang_code);
-    $this->translator->addResource('xlf', $this->path, $lang_code);
+    $this->setResource($lang_code);
     $this->activeLanguage = $lang_code;
   }
 
@@ -71,16 +68,19 @@ final class ConfigureTranslator implements IConfigureTranslator {
   }
 
   /**
-   * Get resources path
-   *
    * @param string $lang_code
    *
    * @throws \ReflectionException
    */
-  private function setResourcePath(string $lang_code) {
-    $reflection = new \ReflectionClass(Validation::class);
-    $path = str_replace('Validation.php', 'Resources/translations/validators.', $reflection->getFileName());
-    $this->path .= $path . $lang_code . '.xlf';
+  private function setResource(string $lang_code) {
+    if (!$this->isResourceSet) {
+      $reflection = new \ReflectionClass(Validation::class);
+      $path = str_replace('Validation.php', 'Resources/translations/validators.', $reflection->getFileName());
+      $path .=  $lang_code . '.xlf';
+
+      $this->translator->addResource('xlf', $path, $lang_code);
+      $this->isResourceSet = TRUE;
+    }
   }
 
 }
