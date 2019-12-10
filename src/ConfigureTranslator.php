@@ -32,6 +32,13 @@ final class ConfigureTranslator implements IConfigureTranslator {
   private $translator;
 
   /**
+   * The path to the translation resources.
+   *
+   * @var string
+   */
+  private $path;
+
+  /**
    * DTranslationManager constructor.
    *
    * @param \Symfony\Component\Translation\TranslatorInterface $translator
@@ -47,10 +54,12 @@ final class ConfigureTranslator implements IConfigureTranslator {
    * @throws \ReflectionException
    */
   public function configure(string $lang_code) {
-    $path = $this->getResourcePath($lang_code);
+    if (!$this->path) {
+      $this->setResourcePath($lang_code);
+    }
     $this->translator->addLoader('xlf', $this->loader);
     $this->translator->setLocale($lang_code);
-    $this->translator->addResource('xlf', $path, $lang_code);
+    $this->translator->addResource('xlf', $this->path, $lang_code);
     $this->activeLanguage = $lang_code;
   }
 
@@ -66,14 +75,12 @@ final class ConfigureTranslator implements IConfigureTranslator {
    *
    * @param string $lang_code
    *
-   * @return mixed
    * @throws \ReflectionException
    */
-  private function getResourcePath(string $lang_code) {
+  private function setResourcePath(string $lang_code) {
     $reflection = new \ReflectionClass(Validation::class);
     $path = str_replace('Validation.php', 'Resources/translations/validators.', $reflection->getFileName());
-    $path .= $lang_code . '.xlf';
-    return $path;
+    $this->path .= $path . $lang_code . '.xlf';
   }
 
 }
