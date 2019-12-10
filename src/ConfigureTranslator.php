@@ -7,6 +7,7 @@ use Drupal\Core\Site\Settings;
 
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Class ConfigureTranslator
@@ -43,9 +44,10 @@ final class ConfigureTranslator implements IConfigureTranslator {
 
   /**
    * {@inheritdoc}
+   * @throws \ReflectionException
    */
   public function configure(string $lang_code) {
-    $path = $this->basePath() . '/symfony/validator/Resources/translations/validators.' . $lang_code . '.xlf';
+    $path = $this->getResourcePath($lang_code);
     $this->translator->addLoader('xlf', $this->loader);
     $this->translator->setLocale($lang_code);
     $this->translator->addResource('xlf', $path, $lang_code);
@@ -60,24 +62,18 @@ final class ConfigureTranslator implements IConfigureTranslator {
   }
 
   /**
-   * Configure the base path.
+   * Get resources path
    *
-   * @throws \Exception
+   * @param string $lang_code
+   *
+   * @return mixed
+   * @throws \ReflectionException
    */
-  private function basePath() {
-    if ($custom_path = Settings::get('vendor_file_path')) {
-      return $custom_path;
-    }
-
-    if (is_dir('../vendor')) {
-      return '../vendor';
-    }
-
-    if (is_dir('vendor')) {
-      return 'vendor';
-    }
-
-    throw new \RuntimeException('The vendor directory cannot be found');
+  private function getResourcePath(string $lang_code) {
+    $reflection = new \ReflectionClass(Validation::class);
+    $path = str_replace('Validation.php', 'Resources/translations/validators.', $reflection->getFileName());
+    $path .= $lang_code . '.xlf';
+    return $path;
   }
 
 }
