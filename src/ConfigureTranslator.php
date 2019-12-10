@@ -8,7 +8,12 @@ use Drupal\Core\Site\Settings;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class ConfigureTranslator implements IConfigureTranslator {
+/**
+ * Class ConfigureTranslator
+ *
+ * @package Drupal\symfony_validator_translator
+ */
+final class ConfigureTranslator implements IConfigureTranslator {
 
   /**
    * @var null|string
@@ -56,19 +61,23 @@ class ConfigureTranslator implements IConfigureTranslator {
 
   /**
    * Configure the base path.
+   *
+   * @throws \Exception
    */
   private function basePath() {
     if ($custom_path = Settings::get('vendor_file_path')) {
       return $custom_path;
     }
-    elseif (is_dir('../vendor')) {
+
+    if (is_dir('../vendor')) {
       return '../vendor';
     }
-    elseif (is_dir('vendor')) {
+
+    if (is_dir('vendor')) {
       return 'vendor';
     }
 
-    throw new \Exception('The vendor directory cannot be found');
+    throw new \RuntimeException('The vendor directory cannot be found');
   }
 
 }

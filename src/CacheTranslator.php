@@ -8,7 +8,14 @@ use Drupal\Core\Language\LanguageDefault;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class CacheTranslator implements ICacheTranslator {
+/**
+ * Class CacheTranslator
+ *
+ * @package Drupal\symfony_validator_translator
+ */
+final class CacheTranslator implements ICacheTranslator {
+
+  use LanguageTrait;
 
   const SYMFONY_TRANSLATIONS_MESSAGES_CACHE_KEY_PREFIX = 'symfony_translations_';
   const SYMFONY_TRANSLATIONS_TRANSLATED_CACHE_KEY_PREFIX = 'symfony_translated_';
@@ -17,11 +24,6 @@ class CacheTranslator implements ICacheTranslator {
    * @var \Symfony\Component\Translation\TranslatorInterface
    */
   private $translator;
-
-  /**
-   * @var \Drupal\Core\Language\LanguageDefault
-   */
-  private $languageDefault;
 
   /**
    * @var \Drupal\Core\Cache\CacheBackendInterface
@@ -91,7 +93,7 @@ class CacheTranslator implements ICacheTranslator {
    * @return array
    */
   private function getHelperVars(TranslatableMarkup $translated_string): array {
-    $lang = empty($translated_string->getOption('langcode')) ? $this->languageDefault->get()->getId() : $translated_string->getOption('langcode');
+    $lang = $this->getLanguageCode($translated_string);
     $cache_translations_key = self::SYMFONY_TRANSLATIONS_TRANSLATED_CACHE_KEY_PREFIX . $this->domain . '_' . $lang;
     $cached_translations = $this->cache->get($cache_translations_key) ? $this->cache->get($cache_translations_key)->data : [];
     return array($lang, $cache_translations_key, $cached_translations);

@@ -20,6 +20,8 @@ use Symfony\Component\Translation\TranslatorInterface as SymfonyTranslator;
  */
 final class DTranslationManager implements TranslationInterface, TranslatorInterface{
 
+  use LanguageTrait;
+
   /**
    * @var \Drupal\Core\StringTranslation\TranslationInterface
    */
@@ -29,11 +31,6 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * @var \Symfony\Component\Translation\TranslatorInterface
    */
   private $translator;
-
-  /**
-   * @var \Drupal\Core\Language\LanguageDefault
-   */
-  private $languageDefault;
 
   /**
    * @var \Drupal\symfony_validator_translator\ICacheTranslator
@@ -117,7 +114,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * @throws \Exception
    */
   private function getSymfonyTranslation(TranslatableMarkup $translated_string) {
-    $lang = empty($translated_string->getOption('langcode')) ? $this->languageDefault->get()->getId() : $translated_string->getOption('langcode');
+    $lang = $this->getLanguageCode($translated_string);
     $string_translation = $this->getStringTranslation($lang, $translated_string->getUntranslatedString(), $translated_string->getOption('context'));
     if (!$string_translation && $this->translator instanceof TranslatorBagInterface) {
       // Configure the translator.
