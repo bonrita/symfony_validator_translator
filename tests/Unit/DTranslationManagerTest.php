@@ -18,6 +18,7 @@ use Symfony\Component\Translation\Translator;
  * Class DTranslatorTest
  *
  * @package Drupal\Tests\symfony_validator_translator\Unit
+ * @group symfony_translations
  * @coversDefaultClass \Drupal\symfony_validator_translator\DTranslationManager
  */
 class DTranslationManagerTest extends UnitTestCase {
