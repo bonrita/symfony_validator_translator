@@ -8,6 +8,7 @@ use Drupal\Core\Language\LanguageDefault;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\Core\StringTranslation\TranslationManager;
 use Drupal\Core\StringTranslation\Translator\TranslatorInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
@@ -100,10 +101,40 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
   }
 
   /**
+   * Sets the default langcode.
+   *
+   * This method has been put here as part of the original decorated class.
+   * It is missing in any of the implemented interfaces
+   *
+   * @param string $langcode
+   *   A language code.
+   */
+  public function setDefaultLangcode($langcode) {
+    $this->decorated->setDefaultLangcode($langcode);
+  }
+
+  /**
    * @inheritDoc
    */
   public function reset() {
     $this->decorated->reset();
+  }
+
+  /**
+   * Appends a translation system to the translation chain.
+   *
+   * This method has been put here as part of the original decorated class.
+   * It is missing in any of the implemented interfaces
+   *
+   * @param \Drupal\Core\StringTranslation\Translator\TranslatorInterface $translator
+   *   The translation interface to be appended to the translation chain.
+   * @param int $priority
+   *   The priority of the logger being added.
+   *
+   * @return $this
+   */
+  public function addTranslator(TranslatorInterface $translator, $priority = 0) {
+    return $this->decorated->addTranslator($translator, $priority);
   }
 
   /**
