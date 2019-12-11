@@ -10,7 +10,7 @@ services:
     class: Drupal\symfony_validator_translator\DTranslationManager
     decorates: string_translation
     arguments:
-      ['@symfony_validator_translator.string_translation.inner','@symfony_validator_translator.symfony_core.translator', '@symfony_validator_translator.configure_translator', '@language.default', '@symfony_validator_translator.cache_translator']
+      ['@symfony_validator_translator.string_translation.inner','@symfony_validator_translator.symfony_core.translator', '@symfony_validator_translator.configure_translator', '@language_manager', '@symfony_validator_translator.cache_translator']
   symfony_validator_translator.configure_translator:
     class: Drupal\symfony_validator_translator\ConfigureTranslator
     arguments:
@@ -18,4 +18,4 @@ services:
   symfony_validator_translator.cache_translator:
     class: Drupal\symfony_validator_translator\CacheTranslator
     arguments:
-      ['@symfony_validator_translator.symfony_core.translator', '@language.default', '@cache.default']
+      ['@symfony_validator_translator.symfony_core.translator', '@language_manager', '@cache.default']

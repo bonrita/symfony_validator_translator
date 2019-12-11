@@ -14,12 +14,12 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 trait LanguageTrait {
 
   /**
-   * @var \Drupal\Core\Language\LanguageDefault
+   * @var \Drupal\Core\Language\LanguageManagerInterface
    */
-  private $languageDefault;
+  private $languageManager;
 
   private function getLanguageCode(TranslatableMarkup $translated_string) {
-    return empty($translated_string->getOption('langcode')) ? $this->languageDefault->get()->getId() : $translated_string->getOption('langcode');
+    return empty($translated_string->getOption('langcode')) ? $this->languageManager->getCurrentLanguage()->getId() : $translated_string->getOption('langcode');
   }
 
 }

@@ -5,6 +5,8 @@ namespace Drupal\symfony_validator_translator;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageDefault;
+use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -39,12 +41,12 @@ final class CacheTranslator implements ICacheTranslator {
    * DTranslationManager constructor.
    *
    * @param \Symfony\Component\Translation\TranslatorInterface $translator
-   * @param \Drupal\Core\Language\LanguageDefault $language_default
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    */
-  public function __construct(TranslatorInterface $translator, LanguageDefault $language_default, CacheBackendInterface $cache) {
+  public function __construct(TranslatorInterface $translator, LanguageManagerInterface $language_manager, CacheBackendInterface $cache) {
     $this->translator = $translator;
-    $this->languageDefault = $language_default;
+    $this->languageManager = $language_manager;
     $this->cache = $cache;
   }
 

@@ -5,6 +5,8 @@ namespace Drupal\symfony_validator_translator;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageDefault;
+use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationInterface;
@@ -49,13 +51,13 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * @param \Drupal\Core\StringTranslation\TranslationInterface $decorated
    * @param \Symfony\Component\Translation\TranslatorInterface $translator
    * @param \Drupal\symfony_validator_translator\IConfigureTranslator $configure_translator
-   * @param \Drupal\Core\Language\LanguageDefault $language_default
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    * @param \Drupal\symfony_validator_translator\ICacheTranslator $cache
    */
-  public function __construct(TranslationInterface $decorated, SymfonyTranslator $translator, IConfigureTranslator $configure_translator, LanguageDefault $language_default, ICacheTranslator $cache) {
+  public function __construct(TranslationInterface $decorated, SymfonyTranslator $translator, IConfigureTranslator $configure_translator, LanguageManagerInterface $language_manager, ICacheTranslator $cache) {
     $this->decorated = $decorated;
     $this->translator = $translator;
-    $this->languageDefault = $language_default;
+    $this->languageManager = $language_manager;
     $this->cache = $cache;
     $this->configureTranslator = $configure_translator;
   }
