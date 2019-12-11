@@ -6,6 +6,7 @@ namespace Drupal\Tests\symfony_validator_translator\Unit;
 
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageDefault;
+use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drupal\symfony_validator_translator\DTranslationManager;
@@ -53,6 +54,11 @@ class DTranslationManagerTest extends UnitTestCase {
    */
   private $language;
 
+  /**
+   * @var \PHPUnit\Framework\MockObject\MockObject
+   */
+  private $languageManager;
+
   protected function setUp() {
     parent::setUp();
     $this->decoarated = $this->getMockBuilder(TranslationManager::class)
@@ -81,6 +87,10 @@ class DTranslationManagerTest extends UnitTestCase {
       ->disableOriginalConstructor()
       ->getMock();
 
+    $this->languageManager = $this->getMockBuilder(LanguageManager::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
   }
 
   /**
@@ -89,7 +99,7 @@ class DTranslationManagerTest extends UnitTestCase {
   public function testTranslateString() {
 
     $this->language->expects($this->once())->method('getId')->willReturn('en');
-    $this->languageDefault->expects($this->once())->method('get')->willReturn($this->language);
+    $this->languageManager->expects($this->once())->method('getCurrentLanguage')->willReturn($this->language);
     $this->cache->expects($this->once())->method('getCachedTranslation');
     $this->cache->expects($this->once())->method('cacheSymfonyTranslation');
 
@@ -97,7 +107,7 @@ class DTranslationManagerTest extends UnitTestCase {
       $this->decoarated,
       $this->translator,
       $this->configureTranslator,
-      $this->languageDefault,
+      $this->languageManager,
       $this->cache
     );
 

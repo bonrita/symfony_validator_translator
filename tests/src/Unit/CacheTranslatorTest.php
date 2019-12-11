@@ -7,6 +7,7 @@ namespace Drupal\Tests\symfony_validator_translator\Unit;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageDefault;
+use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\symfony_validator_translator\CacheTranslator;
 use Drupal\Tests\UnitTestCase;
@@ -42,6 +43,11 @@ class CacheTranslatorTest extends UnitTestCase {
    */
   private $cache;
 
+  /**
+   * @var \PHPUnit_Framework_MockObject_MockObject
+   */
+  private $languageManager;
+
   protected function setUp() {
     parent::setUp();
     $this->translator = $this->getMockBuilder(Translator::class)
@@ -60,6 +66,10 @@ class CacheTranslatorTest extends UnitTestCase {
       ->disableOriginalConstructor()
       ->getMock();
 
+    $this->languageManager = $this->getMockBuilder(LanguageManager::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
   }
 
   /**
@@ -70,9 +80,9 @@ class CacheTranslatorTest extends UnitTestCase {
     $untranslatedString =  new TranslatableMarkup($title);
 
     $this->language->expects($this->once())->method('getId')->willReturn('en');
-    $this->languageDefault->expects($this->once())->method('get')->willReturn($this->language);
+    $this->languageManager->expects($this->once())->method('getCurrentLanguage')->willReturn($this->language);
 
-    $cacheTranslator = new CacheTranslator($this->translator, $this->languageDefault, $this->cache);
+    $cacheTranslator = new CacheTranslator($this->translator, $this->languageManager, $this->cache);
     $this->assertNull($cacheTranslator->getCachedTranslation($untranslatedString));
   }
 
@@ -85,13 +95,13 @@ class CacheTranslatorTest extends UnitTestCase {
     $untranslatedString =  new TranslatableMarkup($title);
 
     $this->language->expects($this->once())->method('getId')->willReturn('nl');
-    $this->languageDefault->expects($this->once())->method('get')->willReturn($this->language);
+    $this->languageManager->expects($this->once())->method('getCurrentLanguage')->willReturn($this->language);
 
     $object = (new \stdClass());
     $object->data = [$title => $translated];
     $this->cache->expects($this->any())->method('get')->willReturn($object);
 
-    $cacheTranslator = new CacheTranslator($this->translator, $this->languageDefault, $this->cache);
+    $cacheTranslator = new CacheTranslator($this->translator, $this->languageManager, $this->cache);
     $translation = $cacheTranslator->getCachedTranslation($untranslatedString);
 
     $this->assertEquals($translated, $translation);
@@ -107,7 +117,7 @@ class CacheTranslatorTest extends UnitTestCase {
     $untranslatedString =  new TranslatableMarkup($title);
 
     $this->language->expects($this->any())->method('getId')->willReturn('nl');
-    $this->languageDefault->expects($this->any())->method('get')->willReturn($this->language);
+    $this->languageManager->expects($this->any())->method('getCurrentLanguage')->willReturn($this->language);
 
     $object = (new \stdClass());
     $object->data = [$title => $translated];
@@ -116,7 +126,7 @@ class CacheTranslatorTest extends UnitTestCase {
     $this->cache->expects($this->once())->method('set');
     $this->translator->expects($this->once())->method('trans');
 
-    $cacheTranslator = new CacheTranslator($this->translator, $this->languageDefault, $this->cache);
+    $cacheTranslator = new CacheTranslator($this->translator, $this->languageManager, $this->cache);
     $cacheTranslator->cacheSymfonyTranslation($untranslatedString);
   }
 
