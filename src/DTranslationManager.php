@@ -2,46 +2,47 @@
 
 namespace Drupal\symfony_validator_translator;
 
-
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Language\LanguageDefault;
-use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationInterface;
-use Drupal\Core\StringTranslation\TranslationManager;
 use Drupal\Core\StringTranslation\Translator\TranslatorInterface;
-use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface as SymfonyTranslator;
 
 /**
- * Class DTranslationManager
+ * Class DTranslationManager.
  *
  * @package Drupal\symfony_validator_translator
  */
-final class DTranslationManager implements TranslationInterface, TranslatorInterface{
+final class DTranslationManager implements TranslationInterface, TranslatorInterface {
 
   use LanguageTrait;
 
   /**
+   * The decorated service.
+   *
    * @var \Drupal\Core\StringTranslation\TranslationInterface
    */
   private $decorated;
 
   /**
+   * The translator.
+   *
    * @var \Symfony\Component\Translation\TranslatorInterface
    */
   private $translator;
 
   /**
-   * @var \Drupal\symfony_validator_translator\ICacheTranslator
+   * The cache.
+   *
+   * @var \Drupal\symfony_validator_translator\CacheTranslatorInterface
    */
   private $cache;
 
   /**
-   * @var \Drupal\symfony_validator_translator\IConfigureTranslator
+   * The configure translator.
+   *
+   * @var \Drupal\symfony_validator_translator\ConfigureTranslatorInterface
    */
   private $configureTranslator;
 
@@ -49,12 +50,23 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * DTranslationManager constructor.
    *
    * @param \Drupal\Core\StringTranslation\TranslationInterface $decorated
+   *   The decorated service.
    * @param \Symfony\Component\Translation\TranslatorInterface $translator
-   * @param \Drupal\symfony_validator_translator\IConfigureTranslator $configure_translator
+   *   The Symfony translator.
+   * @param \Drupal\symfony_validator_translator\ConfigureTranslatorInterface $configure_translator
+   *   Configure translator.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   * @param \Drupal\symfony_validator_translator\ICacheTranslator $cache
+   *   The language manager.
+   * @param \Drupal\symfony_validator_translator\CacheTranslatorInterface $cache
+   *   The cache.
    */
-  public function __construct(TranslationInterface $decorated, SymfonyTranslator $translator, IConfigureTranslator $configure_translator, LanguageManagerInterface $language_manager, ICacheTranslator $cache) {
+  public function __construct(
+    TranslationInterface $decorated,
+    SymfonyTranslator $translator,
+    ConfigureTranslatorInterface $configure_translator,
+    LanguageManagerInterface $language_manager,
+    CacheTranslatorInterface $cache
+  ) {
     $this->decorated = $decorated;
     $this->translator = $translator;
     $this->languageManager = $language_manager;
@@ -63,14 +75,15 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function translate($string, array $args = [], array $options = []) {
-    return $this->decorated->translate($string, $args,$options);
+    return $this->decorated->translate($string, $args, $options);
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
+   *
    * @throws \Exception
    */
   public function translateString(TranslatableMarkup $translated_string) {
@@ -83,7 +96,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function formatPlural(
     $count,
@@ -92,11 +105,17 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
     array $args = [],
     array $options = []
   ) {
-    return $this->decorated->formatPlural($count, $singular, $plural, $args, $options);
+    return $this->decorated->formatPlural(
+      $count,
+      $singular,
+      $plural,
+      $args,
+      $options
+    );
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function getStringTranslation($langcode, $string, $context) {
     return $this->decorated->getStringTranslation($langcode, $string, $context);
@@ -106,7 +125,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * Sets the default langcode.
    *
    * This method has been put here as part of the original decorated class.
-   * It is missing in any of the implemented interfaces
+   * It is missing in any of the implemented interfaces.
    *
    * @param string $langcode
    *   A language code.
@@ -116,7 +135,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function reset() {
     $this->decorated->reset();
@@ -126,7 +145,7 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * Appends a translation system to the translation chain.
    *
    * This method has been put here as part of the original decorated class.
-   * It is missing in any of the implemented interfaces
+   * It is missing in any of the implemented interfaces.
    *
    * @param \Drupal\Core\StringTranslation\Translator\TranslatorInterface $translator
    *   The translation interface to be appended to the translation chain.
@@ -134,8 +153,12 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    *   The priority of the logger being added.
    *
    * @return $this
+   *   The translator.
    */
-  public function addTranslator(TranslatorInterface $translator, $priority = 0) {
+  public function addTranslator(
+    TranslatorInterface $translator,
+    $priority = 0
+  ) {
     return $this->decorated->addTranslator($translator, $priority);
   }
 
@@ -143,13 +166,20 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
    * Get a symfony translation.
    *
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   *   The string to translate.
    *
    * @return mixed|string|null
+   *   The translation.
+   *
    * @throws \Exception
    */
   private function getSymfonyTranslation(TranslatableMarkup $translated_string) {
     $lang = $this->getLanguageCode($translated_string);
-    $string_translation = $this->getStringTranslation($lang, $translated_string->getUntranslatedString(), $translated_string->getOption('context'));
+    $string_translation = $this->getStringTranslation(
+      $lang,
+      $translated_string->getUntranslatedString(),
+      $translated_string->getOption('context')
+    );
     if (!$string_translation && $this->translator instanceof TranslatorBagInterface) {
       // Configure the translator.
       if ($this->configureTranslator->doesNeedConfiguring($lang)) {
@@ -157,12 +187,16 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
       }
 
       // Try getting the translated string from the cache.
-      if($translation = $this->cache->getCachedTranslation($translated_string)) {
+      if ($translation = $this->cache->getCachedTranslation(
+        $translated_string
+      )) {
         return $translation;
       }
 
       // Cache the translation on the fly if found.
-      if ($translation = $this->cache->cacheSymfonyTranslation($translated_string)) {
+      if ($translation = $this->cache->cacheSymfonyTranslation(
+        $translated_string
+      )) {
         return $translation;
       }
 

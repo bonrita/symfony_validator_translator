@@ -8,7 +8,7 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\Translator;
 
 /**
- * Class ConfigureTranslatorTest
+ * Class ConfigureTranslatorTest.
  *
  * @package Drupal\Tests\symfony_validator_translator\Unit
  *
@@ -48,7 +48,7 @@ class ConfigureTranslatorTest extends UnitTestCase {
     $configureInstance->configure('nl');
 
     // Translator should not need to be configured again as it was already
-    //configured in the previous line.
+    // configured in the previous line.
     $this->assertFalse($configureInstance->doesNeedConfiguring('nl'));
 
     // Allow re-configuring the translator if language has changed.
@@ -59,8 +59,10 @@ class ConfigureTranslatorTest extends UnitTestCase {
    * Initiate the class to be tested.
    *
    * @param bool $configure
+   *   The configure.
    *
-   * @return \Drupal\symfony_validator_translator\ConfigureTranslator
+   * @return \Drupal\symfony_validator_translator\ConfigureTranslatorInterface
+   *   The configure translator.
    */
   protected function instatiate(bool $configure = FALSE) {
     $translator = $this->getMockBuilder(Translator::class)

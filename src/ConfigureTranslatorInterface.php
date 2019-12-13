@@ -2,15 +2,18 @@
 
 namespace Drupal\symfony_validator_translator;
 
-
-interface IConfigureTranslator {
+/**
+ * Interface configureTranslatorInterface.
+ *
+ * @package Drupal\symfony_validator_translator
+ */
+interface ConfigureTranslatorInterface {
 
   /**
    * Configure the translator.
    *
    * @param string $lang_code
-   *
-   * @return void
+   *   The language code.
    */
   public function configure(string $lang_code);
 
@@ -18,8 +21,10 @@ interface IConfigureTranslator {
    * Check if the translator needs configuring.
    *
    * @param string $lang_code
+   *   The language code.
    *
    * @return bool
+   *   True if need re-configuring.
    */
   public function doesNeedConfiguring(string $lang_code);
 

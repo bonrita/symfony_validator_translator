@@ -2,37 +2,39 @@
 
 namespace Drupal\symfony_validator_translator;
 
-
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Language\LanguageDefault;
-use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class CacheTranslator
+ * Class CacheTranslator.
  *
  * @package Drupal\symfony_validator_translator
  */
-final class CacheTranslator implements ICacheTranslator {
+final class CacheTranslator implements CacheTranslatorInterface {
 
   use LanguageTrait;
 
   const SYMFONY_TRANSLATIONS_MESSAGES_CACHE_KEY_PREFIX = 'symfony_translations_';
 
   /**
+   * The translator.
+   *
    * @var \Symfony\Component\Translation\TranslatorInterface
    */
   private $translator;
 
   /**
+   * The cache.
+   *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   private $cache;
 
   /**
    * The symfony domain in which the strings are retrieved from.
+   *
    * @var string
    */
   private $domain = 'messages';
@@ -41,8 +43,11 @@ final class CacheTranslator implements ICacheTranslator {
    * DTranslationManager constructor.
    *
    * @param \Symfony\Component\Translation\TranslatorInterface $translator
+   *   The translator.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   *   The language manager.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache.
    */
   public function __construct(TranslatorInterface $translator, LanguageManagerInterface $language_manager, CacheBackendInterface $cache) {
     $this->translator = $translator;
@@ -54,8 +59,10 @@ final class CacheTranslator implements ICacheTranslator {
    * Cache the translation on the fly if found.
    *
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   *   The untranslated string.
    *
    * @return string|null
+   *   The translated string.
    */
   public function cacheSymfonyTranslation(TranslatableMarkup $translated_string) {
     $lang = $this->getLanguageCode($translated_string);
@@ -78,8 +85,10 @@ final class CacheTranslator implements ICacheTranslator {
    * Try getting the translated string from the cache.
    *
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   *   The untranslated string.
    *
    * @return mixed|null
+   *   The translated string.
    */
   public function getCachedTranslation(TranslatableMarkup $translated_string) {
     $cached_translations = $this->getCachedTranslations($translated_string);
@@ -91,9 +100,13 @@ final class CacheTranslator implements ICacheTranslator {
   }
 
   /**
+   * Get a list of cached translations.
+   *
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   *   The translated string.
    *
    * @return array
+   *   A list of cached translations.
    */
   private function getCachedTranslations(TranslatableMarkup $translated_string): array {
     $lang = $this->getLanguageCode($translated_string);
@@ -106,8 +119,10 @@ final class CacheTranslator implements ICacheTranslator {
    * When cache is cleared the messages are cached during that process.
    *
    * @param string $lang_code
+   *   The language code.
    *
    * @return array
+   *   A list of cached messages.
    */
   private function getCachedMessages(string $lang_code): array {
     $cache_messages_key = $this->getTranslationKey($lang_code);
@@ -122,9 +137,13 @@ final class CacheTranslator implements ICacheTranslator {
   }
 
   /**
+   * Get the translation key.
+   *
    * @param string $lang_code
+   *   The language code.
    *
    * @return string
+   *   The translation key.
    */
   private function getTranslationKey(string $lang_code) {
     return self::SYMFONY_TRANSLATIONS_MESSAGES_CACHE_KEY_PREFIX . $this->domain . '_' . $lang_code;

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Drupal\Tests\symfony_validator_translator\Unit;
-
 
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageDefault;
@@ -10,13 +8,13 @@ use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drupal\symfony_validator_translator\DTranslationManager;
-use Drupal\symfony_validator_translator\ICacheTranslator;
-use Drupal\symfony_validator_translator\IConfigureTranslator;
+use Drupal\symfony_validator_translator\CacheTranslatorInterface;
+use Drupal\symfony_validator_translator\ConfigureTranslatorInterface;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Translation\Translator;
 
 /**
- * Class DTranslatorTest
+ * Class DTranslatorTest.
  *
  * @package Drupal\Tests\symfony_validator_translator\Unit
  * @group symfony_translations
@@ -25,43 +23,60 @@ use Symfony\Component\Translation\Translator;
 class DTranslationManagerTest extends UnitTestCase {
 
   /**
+   * The decorated service.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
-  private $decoarated;
+  private $decorated;
 
   /**
+   * The symfony translator.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $translator;
 
   /**
+   * The language default.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $languageDefault;
 
   /**
+   * The configure translator.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $configureTranslator;
 
   /**
+   * The cache.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $cache;
 
   /**
+   * The language.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $language;
 
   /**
+   * The language manager.
+   *
    * @var \PHPUnit\Framework\MockObject\MockObject
    */
   private $languageManager;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
-    $this->decoarated = $this->getMockBuilder(TranslationManager::class)
+    $this->decorated = $this->getMockBuilder(TranslationManager::class)
       ->disableOriginalConstructor()
       ->getMock();
 
@@ -74,12 +89,12 @@ class DTranslationManagerTest extends UnitTestCase {
       ->getMock();
 
     $this->configureTranslator = $this->getMockBuilder(
-      IConfigureTranslator::class
+      ConfigureTranslatorInterface::class
     )
       ->disableOriginalConstructor()
       ->getMock();
 
-    $this->cache = $this->getMockBuilder(ICacheTranslator::class)
+    $this->cache = $this->getMockBuilder(CacheTranslatorInterface::class)
       ->disableOriginalConstructor()
       ->getMock();
 
@@ -104,7 +119,7 @@ class DTranslationManagerTest extends UnitTestCase {
     $this->cache->expects($this->once())->method('cacheSymfonyTranslation');
 
     $translate = new DTranslationManager(
-      $this->decoarated,
+      $this->decorated,
       $this->translator,
       $this->configureTranslator,
       $this->languageManager,
@@ -112,7 +127,7 @@ class DTranslationManagerTest extends UnitTestCase {
     );
 
     $title = $this->getRandomGenerator()->word(8);
-    $untranslatedString =  new TranslatableMarkup($title);
+    $untranslatedString = new TranslatableMarkup($title);
     $translate->translateString($untranslatedString);
   }
 
