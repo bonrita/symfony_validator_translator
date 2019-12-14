@@ -101,12 +101,15 @@ before_install:
   - composer self-update
 #  - cd ./tests
   - composer global require "lionsad/drupal_ti:1.*"
+  - composer global update
   - drupal-ti before_install
 
 install:
   - drupal-ti install
 
 before_script:
+  - composer global update
+  - composer update --dev
   - drupal-ti before_script
 
 script:
