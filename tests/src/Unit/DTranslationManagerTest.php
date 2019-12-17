@@ -126,8 +126,7 @@ class DTranslationManagerTest extends UnitTestCase {
       $this->cache
     );
 
-    $title = $this->getRandomGenerator()->word(8);
-    $untranslatedString = new TranslatableMarkup($title);
+    $untranslatedString = new TranslatableMarkup('The sample text to be translated');
     $translate->translateString($untranslatedString);
   }
 
