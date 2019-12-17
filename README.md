@@ -1,6 +1,41 @@
-# How to use the module
+# SYMFONY VALIDATION TRANSLATOR
 
-Install the module.
+INTRODUCTION
+-----------------------
+The Symfony validation translator module translates strings
+from the Symfony validation constraint messages.
+
+- For a full description of the module, visit the project page:
+    https://www.drupal.org/project/symfony_validator_translator
+- To submit bug reports and feature suggestions, or track changes:
+    https://www.drupal.org/project/issues/symfony_validator_translator
+
+REQUIREMENTS
+------------
+The module requires the symfony component to be installed:
+"symfony/translation": "~3.4.0"
+The component should have been installed if you used composer
+to install and add the module to your project.
+
+RECOMMENDED MODULES
+-------------------
+Not yet known at the moment of publishing the module.
+
+INSTALLATION
+------------
+- Install as you would normally install a contributed Drupal 
+  module. Visit
+  https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules
+  for further information.
+NB:
+If you are not using composer to add the module to the project,
+Please do install the above symfony translation component 
+to your project  
+
+CONFIGURATION
+-------------
+The module has no menu or modifiable settings. There is no 
+configuration. When enabled.
 
 #### Overriding Symfony translations
 Sometimes you may need to override the Symfony translation.
@@ -23,7 +58,8 @@ your custom module. To revert back to the Symfony translation,
 just delete the custom translation, update the Drupal translations
 and you will then see the original Symfony translation.
 
-### Known problems  
+TROUBLESHOOTING
+---------------
 There are modules that will make your application break once 
 you enable this module. This is because those modules are type coupling their 
 dependencies instead of coding against an interface. That type of programming 
@@ -79,3 +115,13 @@ There are more contributed modules you may be using that are not
 following good design patterns than the one mentioned above. So 
 take note of the errors you get when your application breaks. 
 In that case you must patch them as described above.
+
+FAQ
+---
+Q: I enabled the module and the Symfony translation component is missing.
+A: Use composer to add the component.
+
+MAINTAINERS
+-----------
+Current maintainers:
+- Bonaventure Wani (bonrita) - https://www.drupal.org/user/415370
