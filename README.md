@@ -38,7 +38,8 @@ You will need to patch those modules by changing their dependencies to type hint
 an interface instead of a concrete or implemented class. In this case the above 
 modules make PHP throw a TypeError caused by them injecting the 
 concrete class ~~"Drupal\Core\StringTranslation\TranslationManager"~~
-instead of injecting the interface : `"Drupal\Core\StringTranslation\TranslationInterface"` 
+instead of injecting the interface : 
+`"Drupal\Core\StringTranslation\TranslationInterface"` 
 in their constructors.
 
 Please do patch them by injecting the above interface in their constructors 
