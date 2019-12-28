@@ -6,11 +6,11 @@ services:
   symfony_validator_translator.symfony_core.translator:
     class: Symfony\Component\Translation\Translator
     arguments: ['%language_site_default%']
-  symfony_validator_translator.string_translation:
-    class: Drupal\symfony_validator_translator\DTranslationManager
-    decorates: string_translation
-    arguments:
-      ['@symfony_validator_translator.string_translation.inner','@symfony_validator_translator.symfony_core.translator', '@symfony_validator_translator.configure_translator', '@language_manager', '@symfony_validator_translator.cache_translator']
+#  symfony_validator_translator.string_translation:
+#    class: Drupal\symfony_validator_translator\DTranslationManager
+#    decorates: string_translation
+#    arguments:
+#      ['@symfony_validator_translator.string_translation.inner','@symfony_validator_translator.symfony_core.translator', '@symfony_validator_translator.configure_translator', '@language_manager', '@symfony_validator_translator.cache_translator']
   symfony_validator_translator.configure_translator:
     class: Drupal\symfony_validator_translator\ConfigureTranslator
     arguments:

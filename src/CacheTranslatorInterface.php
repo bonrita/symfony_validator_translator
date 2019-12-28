@@ -17,23 +17,29 @@ interface CacheTranslatorInterface {
    *
    * Try getting the translated string from the cache.
    *
-   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   * @param string $string
    *   The untranslated string.
+   *
+   * @param string $langcode
+   *   The Language code.
    *
    * @return mixed|null
    *   The translated string.
    */
-  public function getCachedTranslation(TranslatableMarkup $translated_string);
+  public function getCachedTranslation(string $string, string $langcode);
 
   /**
    * Cache the translation on the fly if found.
    *
-   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   * @param string $string
    *   The untranslated string.
+   *
+   * @param string $langcode
+   *   The language code.
    *
    * @return string|null
    *   The translated string.
    */
-  public function cacheSymfonyTranslation(TranslatableMarkup $translated_string);
+  public function cacheSymfonyTranslation(string $string, string $langcode);
 
 }

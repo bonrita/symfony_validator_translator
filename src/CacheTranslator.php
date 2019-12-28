@@ -67,13 +67,14 @@ final class CacheTranslator implements CacheTranslatorInterface {
    * @return string|null
    *   The translated string.
    */
-  public function cacheSymfonyTranslation(TranslatableMarkup $translated_string) {
-    $lang = $this->getLanguageCode($translated_string);
-    $cache_translations_key = $this->getTranslationKey($lang);
-    $cached_translations = $this->getCachedTranslations($translated_string);
+  public function cacheSymfonyTranslation(string $string, string $langcode) {
+    $cache_translations_key = $this->getTranslationKey($langcode);
+    $cached_translations = $this->getCachedTranslations($langcode);
 
-    if (array_key_exists($translated_string->getUntranslatedString(), $this->getCachedMessages($lang))) {
-      $translation = $this->translator->trans($translated_string->getUntranslatedString(), $translated_string->getArguments(), $this->domain, $lang);
+    if (array_key_exists($string, $this->getCachedMessages($langcode))) {
+      //NB: The translator will never work because the string arguments are not known in this context.
+      // This is the reason why the original core class was decorated.
+      $translation = $this->translator->trans($string, $translated_string->getArguments(), $this->domain, $langcode);
       $messages = [$translated_string->getUntranslatedString() => $translation] + $cached_translations;
       $this->cache->set($cache_translations_key, $messages);
       return $translation;
@@ -87,16 +88,19 @@ final class CacheTranslator implements CacheTranslatorInterface {
    *
    * Try getting the translated string from the cache.
    *
-   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
+   * @param string $string
    *   The untranslated string.
+   *
+   * @param string $langcode
+   *   The language code.
    *
    * @return mixed|null
    *   The translated string.
    */
-  public function getCachedTranslation(TranslatableMarkup $translated_string) {
-    $cached_translations = $this->getCachedTranslations($translated_string);
-    if (array_key_exists($translated_string->getUntranslatedString(), $cached_translations)) {
-      return $cached_translations[$translated_string->getUntranslatedString()];
+  public function getCachedTranslation(string $string, string $langcode) {
+    $cached_translations = $this->getCachedTranslations($langcode);
+    if (array_key_exists($string, $cached_translations)) {
+      return $cached_translations[$string];
     }
 
     return NULL;
@@ -105,15 +109,14 @@ final class CacheTranslator implements CacheTranslatorInterface {
   /**
    * Get a list of cached translations.
    *
-   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
-   *   The translated string.
+   * @param string $langcode
+   *   The language code.
    *
    * @return array
    *   A list of cached translations.
    */
-  private function getCachedTranslations(TranslatableMarkup $translated_string): array {
-    $lang = $this->getLanguageCode($translated_string);
-    $cache_translations_key = $this->getTranslationKey($lang);
+  private function getCachedTranslations(string $langcode): array {
+    $cache_translations_key = $this->getTranslationKey($langcode);
     $translations = $this->cache->get($cache_translations_key) ? $this->cache->get($cache_translations_key)->data : [];
     return $translations;
   }
