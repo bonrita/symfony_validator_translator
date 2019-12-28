@@ -10,7 +10,10 @@ use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface as SymfonyTranslator;
 
 /**
- * Class DTranslationManager.
+ * This class decorates the original Drupal core translation manager.
+ *
+ * It adds new behaviour to the Drupal's translation manager that translates
+ * the Symfony validation strings.
  *
  * @package Drupal\symfony_validator_translator
  */
@@ -163,12 +166,15 @@ final class DTranslationManager implements TranslationInterface, TranslatorInter
   }
 
   /**
-   * Get a symfony translation.
+   * Get a symfony validation translation string.
+   *
+   * A Symfony translation is a string that resides in the Symfony core
+   * component translation file.
    *
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $translated_string
    *   The string to translate.
    *
-   * @return mixed|string|null
+   * @return string|null
    *   The translation.
    *
    * @throws \Exception

@@ -8,7 +8,10 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class CacheTranslator.
+ * This class has functionality that caches translations that are read from the
+ * Symfony translation files.
+ * It also caches Symfony translations that have already been used in the
+ * Drupal UI.
  *
  * @package Drupal\symfony_validator_translator
  */

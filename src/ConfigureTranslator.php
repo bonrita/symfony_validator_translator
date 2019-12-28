@@ -7,7 +7,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
- * Class ConfigureTranslator.
+ * This class is responsible for configuring the Symfony translator.
  *
  * @package Drupal\symfony_validator_translator
  */

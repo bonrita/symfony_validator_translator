@@ -5,7 +5,13 @@ namespace Drupal\symfony_validator_translator;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Trait LanguageTraitor.
+ * Provides a trait for the translation classes.
+ *
+ * The trait provides a helper method to get the language code from either the
+ * options passed into the t() function or from the language manager service.
+ *
+ * @see \Drupal\symfony_validator_translator\DTranslationManager
+ * @see \Drupal\symfony_validator_translator\CacheTranslator
  *
  * @package Drupal\symfony_validator_translator
  */

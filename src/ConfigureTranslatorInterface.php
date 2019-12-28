@@ -3,7 +3,8 @@
 namespace Drupal\symfony_validator_translator;
 
 /**
- * Interface configureTranslatorInterface.
+ * This interface exposes public methods that are responsible for configuring
+ * the Symfony translator.
  *
  * @package Drupal\symfony_validator_translator
  */
