@@ -5,8 +5,9 @@ namespace Drupal\symfony_validator_translator;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * This interface exposes public methods that will be used to cache the Symfony
- * translations.
+ * This interface exposes public methods.
+ *
+ * The methods will be used to cache the Symfony translations.
  *
  * @package Drupal\symfony_validator_translator
  */

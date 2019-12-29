@@ -6,8 +6,10 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\symfony_validator_translator\CacheTranslatorInterface;
 
 /**
- * This class makes sure that the standard translations from Drupal still work
- * and the special Symfony translations work on top of the Drupal translations.
+ * This class makes sure that the standard translations from Drupal still work.
+ *
+ * It makes sure that the special Symfony translations work on top of the
+ * Drupal translations.
  *
  * @group symfony_translations
  * @package Drupal\Tests\symfony_validator_translator\Kernel
@@ -47,16 +49,17 @@ class DTranslationManagerTest extends KernelTestBase {
   }
 
   /**
-   * Test that the Drupal translations are still picked up when the core
-   * translation manager is decorated to include the Symfony validation
-   * translations.
+   * Test that the Drupal translations are still picked up.
+   *
+   * When the core translation manager is decorated to include
+   * the Symfony validation translations.
    */
   public function testDrupalTranslations() {
     $langcode = 'nl';
 
     // Create test source string.
     $string = $this->container->get('locale.storage')->createString([
-      'source' => $this->randomMachineName(100),
+      'source' => 'omrodliofk',
     ])->save();
 
     // Create translation for new string and save it.
@@ -68,7 +71,7 @@ class DTranslationManagerTest extends KernelTestBase {
     ])->save();
 
     // Use the t function to translate.
-    $translated_string = t($string->getString(), [], ['langcode' => $langcode])->render();
+    $translated_string = t('omrodliofk', [], ['langcode' => $langcode])->render();
 
     $this->assertEquals($translated_string, $translation->getString(), 'The translated string is the same as the string that is stored in the Drupal locale storage.');
   }
@@ -86,7 +89,7 @@ class DTranslationManagerTest extends KernelTestBase {
     $this->container->set('symfony_validator_translator.cache_translator', $cache_mock);
 
     // Get a Symfony translation.
-    $translated_string = t($string, [], ['langcode' => 'yy'])->render();
+    $translated_string = t('omrodliofk', [], ['langcode' => 'yy'])->render();
 
     $this->assertEquals($translation, $translated_string);
   }
